@@ -1,6 +1,19 @@
 adj = input("Enter an adjective: ")
+animal = input("Enter an animal: ")
+noun = input("Enter a noun: ")
+adj1 = input("Enter another adjective: ")
+noun1 = input("Enter another noun: ")
+place = input("Enter a place: ")
+adj2 = input("Enter another adjective: ")
+animal1 = input("Enter another animal: ")
+food = input("Enter a food: ")
 verb = input("Enter a verb: ")
-verb2 = input("Enter another verb: ")
+adj3 = input("Enter another adjective: ")
+place1 = input("Enter another place: ")
+verb1 = input("Enter a verb ending in -ing: ")
+adj4 = input("Enter another adjective: ")
+noun2 = input("Enter another noun: ")
+plural_noun = input("Enter a plural noun: ")
 
-madlib = f"Computer programming is so {adj}! I love {verb}ing {verb2}!"
+madlib = f"On a {adj} afternoon, a {animal} decided to go on an adventure. It packed a {noun}, grabbed a {adj1} {noun1}, and set off towards the {place}. Along the way, it met a {adj2} {animal1} who offered it a {food}. Together, they {verb} through the {adj3} {place1}, laughing and {verb1} all the way. By the end of the day, they had discovered a {adj4} {noun2} and became the best of {plural_noun}!"
 print(madlib)
