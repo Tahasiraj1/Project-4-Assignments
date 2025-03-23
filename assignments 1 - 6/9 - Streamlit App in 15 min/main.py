@@ -1,33 +1,37 @@
+import requests
+import dotenv
+import os
 import streamlit as st
-from streamlit_drawable_canvas import st_canvas
 
-st.set_page_config(page_title="Drawing App", layout="wide")
+dotenv.load_dotenv()
 
-st.title("🎨 Streamlit Drawing App")
+st.set_page_config(page_title="Weather App")
+st.title("🌡️ Weather App")
 
-st.sidebar.header("Canvas Options")
-stroke_width = st.sidebar.slider("Stroke width:", 1, 25, 3)
-stroke_color = st.sidebar.color_picker("Stroke color:", "#000000")
-bg_color = st.sidebar.color_picker("Background color:", "#FFFFFF")
-drawing_mode = st.sidebar.radio("Drawing tool:", ["freedraw", "line", "rect", "circle", "point"], index=0)
+API_KEY = os.getenv("WEATHER_API_KEY")
+BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
-if "canvas_key" not in st.session_state:
-    st.session_state.canvas_key = "canvas"
+# Get city name from user
+city = st.text_input("Enter city name: ").strip().lower()
 
-canvas_result = st_canvas(
-    fill_color="rgba(255, 255, 255, 0)",  
-    stroke_width=stroke_width,
-    stroke_color=stroke_color,
-    background_color=bg_color,
-    height=400,
-    width=700,
-    drawing_mode=drawing_mode,
-    key=st.session_state.canvas_key, 
-)
+# Construct the API request URL
+url = f"{BASE_URL}?q={city}&appid={API_KEY}&units=metric"
 
-if canvas_result.image_data is not None:
-    st.sidebar.image(canvas_result.image_data, caption="Your Drawing", use_container_width=True)
+if st.button("Get Weather", use_container_width=True):
+    # Make the API request Fetch weather data
+    response = requests.get(url)
 
-if st.sidebar.button("Clear Canvas", use_container_width=True):
-    st.session_state.canvas_key = str(hash(st.session_state.canvas_key))  # Change key to refresh the canvas
-    st.rerun()  # Rerun the app to apply changes
+    if response.status_code == 200:
+        data = response.json()
+        temperature = data['main']['temp']
+        condition = data['weather'][0]['main']
+        humidity = data['main']['humidity']
+        wind_speed = data['wind']['speed']
+
+        st.write(f"\n🌍 Weather in {city}:")
+        st.success(f"🌡 Temperature: {temperature}°C")
+        st.success(f"☁ Condition: {condition.capitalize()}")
+        st.success(f"💧 Humidity: {humidity}%")
+        st.success(f"🌬 Wind Speed: {wind_speed} km/h")
+    else:
+        st.error("❌ Error: City not found or API request failed!")
