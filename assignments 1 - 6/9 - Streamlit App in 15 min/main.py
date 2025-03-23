@@ -1,14 +1,11 @@
 import requests
-import dotenv
-import os
 import streamlit as st
 
-dotenv.load_dotenv()
 
 st.set_page_config(page_title="Weather App")
 st.title("🌡️ Weather App")
 
-API_KEY = os.getenv("WEATHER_API_KEY")
+API_KEY = st.secrets["OPEN_WEATHER_API_KEY"]
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 # Get city name from user
